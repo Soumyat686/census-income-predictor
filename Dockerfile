@@ -1,5 +1,5 @@
 FROM python:3.11-slim
-FROM debian:bullseye-slim
+
 # Set working directory
 WORKDIR /app
 
@@ -19,15 +19,13 @@ COPY requirements/ requirements/
 # Install build dependencies and all requirements
 #RUN apt-get update -o Debug::Acquire::http=true
 #RUN cat /etc/apt/sources.list
-RUN apt-get update 
-
-#RUN apt-get install -y --no-install-recommends gcc build-essential
-RUN pip install --no-binary :all: -e ".[api]"
-RUN pip install --no-cache-dir fastapi uvicorn pydantic-settings
-RUN apt-get remove -y gcc build-essential
-RUN apt-get autoremove -y
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essential \
+    && pip install --no-cache-dir -e ".[api]" \
+    && pip install --no-cache-dir fastapi uvicorn pydantic-settings \
+    && apt-get remove -y gcc build-essential \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
 
