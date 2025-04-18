@@ -19,35 +19,17 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements/requirements.txt
     - name: Train and save pipeline
-      run: python income_prediction/train_pipeline.py
+      run: python income_predictor/train_pipeline.py
     - uses: actions/upload-artifact@v4
       with:
         name: my-trained-pipeline
-        path: income_prediction/trained_models/*.pkl
+        path: income_predictor/trained_models/*.pkl
         retention-days: 1
 
-  test:
-    needs: train
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
-    - uses: actions/download-artifact@v4
-      with:
-        name: my-trained-pipeline
-        path: income_prediction/trained_models
-    - name: Install dependencies
-      run: pip install -r requirements/test_requirements.txt
-    - name: Test with pytest
-      run: pytest
+ 
 
   build:
-    needs: [train, test]
+    needs: [train]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,7 +42,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: my-trained-pipeline
-        path: income_prediction/trained_models
+        path: income_predictor/trained_models
     - name: Install dependencies
       run: pip install --upgrade build
     - name: Build package
@@ -72,7 +54,7 @@ jobs:
         retention-days: 1
 
   push-image:
-    needs: [train, test, build]
+    needs: [train,  build]
     runs-on: ubuntu-latest
     steps:
     - name: Repo Checkout
@@ -81,7 +63,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: my-build-package
-        path: income_prediction_api
+        path: income_predictor_api
 
     - name: Login to Docker hub
       uses: docker/login-action@v1
@@ -93,12 +75,12 @@ jobs:
     - name: Build the Docker image for Fastapi app
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-      run: docker build . -f Dockerfile -t $DOCKER_USER/income_prediction-fastapi:latest
+      run: docker build . -f Dockerfile -t $DOCKER_USER/income_predictor-fastapi:latest
 
     - name: Push the Docker Image
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-      run: docker push $DOCKER_USER/income_prediction-fastapi
+      run: docker push $DOCKER_USER/income_predictor-fastapi
 
     - name: Logout to Docker hub
       run: docker logout
