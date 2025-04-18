@@ -1,9 +1,9 @@
 # config/core.py
 import os
 import yaml
-import income_predictor
+#import income_predictor
 from pathlib import Path
-PACKAGE_ROOT = Path(income_predictor.__file__).resolve().parent
+PACKAGE_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 def get_config_path():
     """Get the configuration file path"""
     # Navigate to the directory containing this file and get the config file
