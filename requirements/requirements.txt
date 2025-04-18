@@ -1,0 +1,14 @@
+fastapi==0.104.1
+uvicorn==0.23.2
+pytest==7.4.3
+httpx==0.25.1
+python-dotenv==1.0.0
+joblib==1.4.2
+numpy==2.2.2 
+pandas==2.2.3
+pydantic==2.10.5
+ruamel.yaml==0.18.10
+scikit-learn==1.6.1
+strictyaml==1.7.3
+PyYAML
+

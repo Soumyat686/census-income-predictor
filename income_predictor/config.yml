@@ -1,0 +1,13 @@
+# config/config.yml
+data:
+  raw_path: 'datasets/'
+  output_file: 'census_data.csv'
+  
+model:
+  test_size: 0.2
+  random_state: 42
+  n_estimators: 100
+  
+paths:
+  models_dir: 'trained_models/'
+  model_filename: 'census_income_model.pkl'
