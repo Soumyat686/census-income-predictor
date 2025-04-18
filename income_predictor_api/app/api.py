@@ -2,7 +2,7 @@
 import os
 import sys
 import uvicorn
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, APIRouter,  Request
 from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Literal
 import pandas as pd
@@ -17,6 +17,8 @@ sys.path.insert(0, project_root)
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from income_predictor.predict import predict, load_model
 from income_predictor.processing.validation import validate_input_data
+api_router = APIRouter()
+
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -79,11 +81,11 @@ class BatchPredictionInput(BaseModel):
 class BatchPredictionOutput(BaseModel):
     predictions: List[PredictionOutput] = Field(..., description="List of prediction results")
     
-@app.get("/")
+@api_router.get("/")
 def root():
     return {"message": "Welcome to the Census Income Prediction API. Visit /docs for the API documentation."}
 
-@app.get("/health")
+@api_router.get("/health")
 def health_check():
     """API health check endpoint"""
     return {
@@ -91,7 +93,7 @@ def health_check():
         "message": "API is running"
     }
 
-@app.post("/predict", response_model=PredictionOutput)
+@api_router.post("/predict", response_model=PredictionOutput)
 def make_prediction(input_data: CensusInput):
     """
     Make income prediction based on census data

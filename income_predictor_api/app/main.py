@@ -14,7 +14,9 @@ from app.api import api_router
 from app.config import settings
 
 app = FastAPI(
-    title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
+    title="Census Income Prediction API",
+    description="API for predicting whether income exceeds $50K based on census data",
+    version="0.1.0"
 )
 
 root_router = APIRouter()
