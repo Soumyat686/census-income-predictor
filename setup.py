@@ -27,7 +27,7 @@ print(ROOT_DIR)
 REQUIREMENTS_DIR = ROOT_DIR / 'requirements'
 PACKAGE_DIR = ROOT_DIR / 'income_predictor'
 #with open(PACKAGE_DIR / "VERSION") as f:
-_version = 0.0.1
+_version = "0.0.1"
 about["__version__"] = _version
 
 
