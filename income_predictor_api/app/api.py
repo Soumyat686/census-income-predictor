@@ -2,7 +2,7 @@
 import os
 import sys
 import uvicorn
-from fastapi import FastAPI, HTTPException, Query, APIRouter, git  Request
+from fastapi import FastAPI, HTTPException, Query, APIRouter, Request
 from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Literal
 import pandas as pd
