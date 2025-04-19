@@ -26,7 +26,7 @@ app = FastAPI(
     description="API for predicting whether income exceeds $50K based on census data",
     version="0.1.0"
 )
-
+app.include_router(api_router)
 # Load model at startup
 @app.on_event("startup")
 async def startup_event():
